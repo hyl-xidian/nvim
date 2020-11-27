@@ -21,8 +21,8 @@ set laststatus=2
 " Set the statusline
 " Preview all highlight groups with `:so $VIMRUNTIME/syntax/hitest.vim
 set statusline=
-set statusline+=%#Normal#
-set statusline+=%{StatuslineGit()}
+"set statusline+=%#Normal#
+"set statusline+=%{StatuslineGit()}
 set statusline+=%#Keyword#
 set statusline+=\ %F
 set statusline+=%m
@@ -368,7 +368,6 @@ function! PackInit() abort
     call minpac#add('iamcco/markdown-preview.nvim', {'type': 'start', 'for':'markdown'})
     " devicons
     call minpac#add('ryanoasis/vim-devicons', {'type':'start'})
-
 endfunction
 
 command! PackUpdate call PackInit() | call minpac#update()
@@ -392,7 +391,7 @@ let g:netrw_banner=0
 "" 3. Open the file with a new tab
 "" 4. Use the previous window to open the file
 let g:netrw_browse_split=4
-"i	Cycle between thin, long, wide, and tree listings
+" 'i' key: Cycle between thin, long, wide, and tree listings
 ""liststyle:thin/long/wide/tree
 let g:netrw_liststyle=3
 
@@ -484,25 +483,6 @@ nnoremap <LEADER>n :RangerCurrentFile<CR>
 let g:lazygit_floating_window_scaling_factor = 0.8 " scaling factor for floating window
 let g:lazygit_floating_window_corner_chars = ['╭', '╮', '╰', '╯'] " customize lazygit popup window corner characters
 nnoremap <F3> :LazyGit<CR>
-
-""$    " ===
-""$    " === vim-visual-multi
-""$    " ===
-""$    "let g:VM_theme             = 'iceblue'
-""$    "let g:VM_default_mappings = 0
-""$    let g:VM_leader                     = {'default': ',', 'visual': ',', 'buffer': ','}
-""$    let g:VM_maps                       = {}
-""$    "let g:VM_custom_motions             = {'n': 'h', 'i': 'l', 'u': 'k', 'e': 'j', 'N': '0', 'I': '$', 'h': 'e'}
-""$    let g:VM_maps['i']                  = 'k'
-""$    let g:VM_maps['I']                  = 'K'
-""$    let g:VM_maps['Find Under']         = '<C-k>'
-""$    let g:VM_maps['Find Subword Under'] = '<C-k>'
-""$    let g:VM_maps['Find Next']          = ''
-""$    let g:VM_maps['Find Prev']          = ''
-""$    let g:VM_maps['Remove Region']      = 'q'
-""$    "let g:VM_maps['Skip Region']        = '<c-n>'
-""$    let g:VM_maps["Undo"]               = 'l'
-""$    "let g:VM_maps["Redo"]               = '<C-r>'
 
 
 "" ===
