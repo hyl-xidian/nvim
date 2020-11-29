@@ -329,7 +329,9 @@ Plug 'mbbill/undotree'
 " Git status plug
 Plug 'airblade/vim-gitgutter'
 " FZF
+"" Attention:fzf requirs Neovim 0.4+
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " Ranger
 Plug 'rbgrouleff/bclose.vim'
 Plug 'francoiscabrol/ranger.vim'
@@ -343,7 +345,7 @@ Plug 'gcmt/wildfire.vim'
 Plug 'tpope/vim-surround'
 
 "" markdown
-Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+"Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 " markdown table mode
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle', 'for': ['text', 'markdown', 'vim-plug'] }
 " Markdown TOC
