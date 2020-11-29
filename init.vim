@@ -276,10 +276,10 @@ noremap oh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>:RangerCurrentFile
 noremap ol :set splitright<CR>:vsplit<CR>:RangerCurrentFile<CR>
 
 " Resize splits with arrow keys
-noremap <up> :res -5<CR>
-noremap <down> :res +5<CR>
-noremap <left> :vertical resize+5<CR>
-noremap <right> :vertical resize-5<CR>
+noremap <up> :res +5<CR>
+noremap <down> :res -5<CR>
+noremap <left> :vertical resize-5<CR>
+noremap <right> :vertical resize+5<CR>
 
 " Place the two screens up and down
 noremap sh <C-w>t<C-w>K
@@ -321,59 +321,42 @@ nnoremap bs :ls b<CR>
 "" ===
 "" install plug
 "" ===
+call plug#begin('~/.config/nvim/plugged')
 
-"" Minpac should be installed under pack/minpac/opt/ in the first directory in the 'packpath' option
-"" So check out which is the first by `set packpath?`
-"
-"" Set packpath maually
-"" Reference: https://vi.stackexchange.com/questions/22359/how-to-change-location-of-vim
-"" set packpath^=~/.vim
-"
-"" NOTE: minpac use the latest feature--'packages'
-"" See: `:help packages` for detail.
+Plug 'bling/vim-bufferline'
+" Undo Tree
+Plug 'mbbill/undotree'
+" Git status plug
+Plug 'airblade/vim-gitgutter'
+" FZF
+Plug 'junegunn/fzf.vim'
+" Ranger
+Plug 'rbgrouleff/bclose.vim'
+Plug 'francoiscabrol/ranger.vim'
+" Lazygit
+Plug 'kdheepak/lazygit.nvim'
 
-function! PackInit() abort
-    packadd minpac
-    call minpac#init()
-    " Useful buffer display
-    call minpac#add('bling/vim-bufferline', {'type': 'start'})
-    " Exquisite tabline
-    call minpac#add('mg979/vim-xtabline', {'type': 'start'})
-    " Undo Tree
-    call minpac#add('mbbill/undotree', {'type': 'start'})
-    " Git status plug
-    call minpac#add('airblade/vim-gitgutter', {'type': 'start'})
-    " FZF
-    call minpac#add('junegunn/fzf.vim', {'type': 'start'})
-    " Ranger
-    call minpac#add('rbgrouleff/bclose.vim', {'type': 'start'})
-    call minpac#add('francoiscabrol/ranger.vim', {'type': 'start'})
-    " Lazygit
-    call minpac#add('kdheepak/lazygit.nvim', { 'branch': 'nvim-v0.4.3', 'type': 'start'})
+"" wildfire + surround
+" With Wildfire you can quickly select the closest text object among a group of candidates.
+Plug 'gcmt/wildfire.vim'
+" Surround.vim is all about "surroundings": parentheses, brackets, quotes, XML tags, and more. The plugin provides mappings to easily delete, change and add such surroundings in pairs.
+Plug 'tpope/vim-surround'
 
-    "" wildfire + surround
-    " With Wildfire you can quickly select the closest text object among a group of candidates.
-    call minpac#add('gcmt/wildfire.vim', {'type':'start'})
-    " Surround.vim is all about "surroundings": parentheses, brackets, quotes, XML tags, and more. The plugin provides mappings to easily delete, change and add such surroundings in pairs.
-    call minpac#add('tpope/vim-surround', {'type':'start'})
+"" markdown
+Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+" markdown table mode
+Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle', 'for': ['text', 'markdown', 'vim-plug'] }
+" Markdown TOC
+Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] }
 
-    "" markdown
-    " markdown table mode
-    call minpac#add('dhruvasagar/vim-table-mode', {'type':'start', 'for':'markdown'})
-    " Markdown TOC
-    call minpac#add('mzlogin/vim-markdown-toc', {'type':'start', 'for':'markdown'})
-    " Markdown preview
-    " Execute commands `:call mkdp#util#install()` after installation. 
-    " Ps: privoxy' may be needed
-    call minpac#add('iamcco/markdown-preview.nvim', {'type': 'start', 'for':'markdown'})
-    " devicons
-    call minpac#add('ryanoasis/vim-devicons', {'type':'start'})
-endfunction
+"" Markdown preview
+"" Execute commands `:call mkdp#util#install()` after installation.
+"" Ps: privoxy' may be needed
+"call minpac#add('iamcco/markdown-preview.nvim', {'type': 'start', 'for':'markdown'})
 
-command! PackUpdate call PackInit() | call minpac#update()
-command! PackClean  call PackInit() | call minpac#clean()
-command! PackStatus packadd minpac | call minpac#status()
-
+" devicons
+Plug 'ryanoasis/vim-devicons'
+call plug#end()
 "}}}
 
 " Configurations {{{
@@ -494,41 +477,13 @@ map tm :TableModeToggle<CR>
 "" ===
 "" vim markdown preview
 "" ===
-map mp :MarkdownPreview<CR>
-map ms :MarkdownPreviewStop<CR>
-
-let g:mkdp_auto_start = 0
-let g:mkdp_auto_close = 1
-let g:mkdp_refresh_slow = 0
-
-" set to 1, the MarkdownPreview command can be use for all files,
-" by default it can be use in markdown file
-" default: 0
-let g:mkdp_command_for_global = 0
-
-let g:mkdp_open_to_the_world = 0
-let g:mkdp_browser = 'firefox'
-
-" a custom vim function name to open preview page
-" this function will receive url as param
-" default is empty
-let g:mkdp_browserfunc = ''
-" preview page title
-" ${name} will be replace with the file name
-let g:mkdp_page_title = '「${name}」'
-
-let g:mkdp_preview_options = {
-\ 'mkit': {},
-\ 'katex': {},
-\ 'uml': {},
-\ 'maid': {},
-\ 'disable_sync_scroll': 0,
-\ 'sync_scroll_type': 'middle',
-\ 'hide_yaml_meta': 1,
-\ 'sequence_diagrams': {},
-\ 'flowchart_diagrams': {},
-\ 'content_editable': v:false
-\}
+let g:instant_markdown_slow = 0
+let g:instant_markdown_autostart = 0
+" let g:instant_markdown_open_to_the_world = 1
+" " let g:instant_markdown_allow_unsafe_content = 1
+" " let g:instant_markdown_allow_external_content = 0
+" " let g:instant_markdown_mathjax = 1
+let g:instant_markdown_autoscroll = 1
 
 
 "" ===
