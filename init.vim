@@ -328,15 +328,15 @@ Plug 'bling/vim-bufferline'
 Plug 'mbbill/undotree'
 " Git status plug
 Plug 'airblade/vim-gitgutter'
-" FZF
-"" Attention:fzf requirs Neovim 0.4+
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+"" FZF
+""" Attention:fzf requirs Neovim 0.4+
+"Plug 'junegunn/fzf.vim'
+"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " Ranger
 Plug 'rbgrouleff/bclose.vim'
 Plug 'francoiscabrol/ranger.vim'
 " Lazygit
-Plug 'kdheepak/lazygit.nvim'
+"Plug 'kdheepak/lazygit.nvim'
 
 "" wildfire + surround
 " With Wildfire you can quickly select the closest text object among a group of candidates.
@@ -357,7 +357,7 @@ Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] 
 "call minpac#add('iamcco/markdown-preview.nvim', {'type': 'start', 'for':'markdown'})
 
 " devicons
-Plug 'ryanoasis/vim-devicons'
+"Plug 'ryanoasis/vim-devicons'
 call plug#end()
 "}}}
 
