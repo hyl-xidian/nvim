@@ -330,6 +330,10 @@ Plug 'mbbill/undotree'
 Plug 'airblade/vim-gitgutter'
 "" FZF
 """ Attention:fzf requirs Neovim 0.4+
+""" Dependency:Ripgrep
+""" INSTALL: for Ubuntu 18.04
+""" curl -LO https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb
+""" sudo dpkg -i ripgrep_12.1.1_amd64.deb
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " Ranger
