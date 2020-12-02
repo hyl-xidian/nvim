@@ -223,10 +223,15 @@ nnoremap <LEADER>p "+p
 " Press F4 to toggle syntax
 nnoremap <F4> :exec exists('syntax_on') ? 'syn off': 'syn on'<CR>
 
-" Faster save and quit
-map S :w<CR>
-map Q :q<CR>
+"" F3 calls lazygit
 
+" Toggle paste mode
+set pastetoggle=<F12>
+
+" Faster save
+nnoremap S :w<CR>
+
+" swap ; and :
 nnoremap ; :
 "}}}
 
