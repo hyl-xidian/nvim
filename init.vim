@@ -506,37 +506,6 @@ let g:vmt_cycle_list_item_markers = 1
 "}}}
 
 " Useful Functions {{{
-" Fcitx Control {{{
-"" ===
-"" fcitx control
-"" when exiting from insert mode, the fcitx switches to en_US automatically
-"" http://fcitx.github.io/handbook/chapter-remote.html
-"" ===
-let g:input_toggle = 1
-function! Fcitx2en()
-let s:input_status = system("fcitx-remote")
-if s:input_status == 2
-    let g:input_toggle = 1
-    let l:a = system("fcitx-remote -c")
-endif
-endfunction
-
-"function! Fcitx2zh()
-"    let s:input_status = system("fcitx-remote")
-"    if s:input_status != 2 && g:input_toggle == 1
-"        let l:a = system("fcitx-remote -o")
-"        let g:input_toggle = 0
-"    endif
-"endfunction
-
-"" when entering in insert mode, switches to zh_CN automatically
-"" default : close
-"autocmd InsertEnter * call Fcitx2zh()
-
-autocmd InsertLeave * call Fcitx2en()
-
-"}}}
-
 " CompileRunGcc {{{
 func! CompileRunGcc()
 exec "w"
@@ -611,7 +580,7 @@ autocmd Filetype markdown inoremap <buffer> ,l --------<Enter>
 "}}}
 
 " C++ Snippets {{{
-autocmd Filetype cpp,c inoremap <buffer> ,for <Esc>:-1read$HOME/.vim/code-snippets/c++_for_.snippets<CR>
+autocmd Filetype cpp,c inoremap <buffer> ,for <Esc>:-1read$HOME/.config/nvim/code-snippets/c++_for_.snippets<CR>
 "}}}
 "}}}
 
