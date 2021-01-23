@@ -339,8 +339,8 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " Ranger
 Plug 'rbgrouleff/bclose.vim'
 Plug 'francoiscabrol/ranger.vim'
-" Lazygit
-Plug 'kdheepak/lazygit.nvim'
+""" Lazygit
+""Plug 'kdheepak/lazygit.nvim'
 
 "" wildfire + surround
 " With Wildfire you can quickly select the closest text object among a group of candidates.
