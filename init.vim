@@ -225,8 +225,6 @@ nnoremap <F4> :exec exists('syntax_on') ? 'syn off': 'syn on'<CR>
 
 " Faster save and quit
 nnoremap S :w<CR>
-
-nnoremap ; :
 "}}}
 
 " Cursor Movement {{{
@@ -241,8 +239,7 @@ noremap J 5j
 nnoremap Y y$
 
 "" 0 key: go to the start of the current line
-"" - key: go to the end of the current line
-noremap - $
+"" $ key: go to the end of the current line
 "}}}
 
 " Command Mode Cursor Movement {{{
