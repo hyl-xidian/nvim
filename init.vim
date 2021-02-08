@@ -462,12 +462,12 @@ let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
 nnoremap <LEADER>o :RangerCurrentDirectoryNewTab<CR>
 nnoremap <LEADER>n :RangerCurrentFile<CR>
 
-"" ===
-"" === Lazygit
-"" ===
-let g:lazygit_floating_window_scaling_factor = 0.8 " scaling factor for floating window
-let g:lazygit_floating_window_corner_chars = ['╭', '╮', '╰', '╯'] " customize lazygit popup window corner characters
-nnoremap <F3> :LazyGit<CR>
+""  "" ===
+""  "" === Lazygit
+""  "" ===
+""  let g:lazygit_floating_window_scaling_factor = 0.8 " scaling factor for floating window
+""  let g:lazygit_floating_window_corner_chars = ['╭', '╮', '╰', '╯'] " customize lazygit popup window corner characters
+""  nnoremap <F3> :LazyGit<CR>
 
 
 "" ===
@@ -492,7 +492,7 @@ let g:mkdp_refresh_slow = 0
 let g:mkdp_command_for_global = 0
 
 let g:mkdp_open_to_the_world = 0
-let g:mkdp_browser = 'firefox'
+let g:mkdp_browser = 'chromium'
 
 " a custom vim function name to open preview page
 " this function will receive url as param
