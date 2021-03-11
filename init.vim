@@ -36,6 +36,7 @@ set statusline+=\ %{&fileformat}:%{&fileencoding?&fileencoding:&encoding}
 set statusline+=%#Keyword#
 set statusline+=\%y
 
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "}}}
 
 " Editor Behavior {{{
@@ -52,7 +53,8 @@ set statusline+=\%y
 "
 "" Affected functions:
 "" vim-gitgutter
-set updatetime=600
+set updatetime=200
+" set updatetime=600
 
 "" Key-specific timeoutlen in vim
 "" Example: In normal mode, the 'b' key has been bound to Buffer related operations. Like:bd
@@ -310,6 +312,10 @@ nnoremap bd :bd<CR>
 " List the buffers
 nnoremap bs :ls b<CR>
 "}}}
+
+" code {{{
+inoremap {{ {}<Esc>i<CR><Esc>koi<Esc>j<C-S-v><S-%>=j<S-$>xa
+"}}}
 "}}}
 
 " Plugins {{{
@@ -358,10 +364,109 @@ Plug 'iamcco/markdown-preview.nvim', {'for':'markdown'}
 
 " devicons
 Plug 'ryanoasis/vim-devicons'
+
+" coc.nvim
+Plug 'neoclide/coc.nvim',{'branch': 'release'}
+
+" highlight
+Plug 'RRethy/vim-illuminate'
+
+" Snippets
+""  Plug 'honza/vim-snippets'
+""  Plug 'SirVer/ultisnips'
 call plug#end()
 "}}}
 
+" COC Configuration {{{
+"" ===
+"" === coc.nvim
+"" ===
+let g:coc_global_extensions = [
+            \ 'coc-json',
+            \ 'coc-vimlsp',
+            \ 'coc-explorer',
+            \ 'coc-translator',]
+
+set nobackup
+set nowritebackup
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> <leader>[ <Plug>(coc-diagnostic-prev)
+nmap <silent> <leader>] <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> ? :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+""" Highlight the symbol and its references when holding the cursor.
+""autocmd CursorHold * silent call CocActionAsync('highlight')
+" Symbol renaming.
+nmap <leader>r <Plug>(coc-rename)
+"
+"" Formatting selected code.
+"" NOTE: conflict with :Ranger
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+nmap tt :CocCommand explorer<CR>
+" coc-translator
+nmap ts <Plug>(coc-translator-p)
+
+""  " Remap for do codeAction of selected region
+""  function! s:cocActionsOpenFromSelected(type) abort
+""    execute 'CocCommand actions.open ' . a:type
+""  endfunction
+""  xmap <leader>a  <Plug>(coc-codeaction-selected)
+""  nmap <leader>a  <Plug>(coc-codeaction-selected)
+""
+""  " Applying codeAction to the selected region.
+""  " Example: `<leader>aap` for current paragraph
+""  xmap <leader>a  <Plug>(coc-codeaction-selected)
+""  nmap <leader>a  <Plug>(coc-codeaction-selected)
+"}}}
+
 " Configurations {{{
+" ===
+" === vim-illuminate
+" ===
+let g:Illuminate_delay = 550
+hi illuminatedWord cterm=undercurl gui=undercurl
+
+
 "" ===
 "" === Netrw
 "" ===
@@ -520,7 +625,6 @@ let g:mkdp_preview_options = {
 "" === Markdown TOC
 "" ===
 let g:vmt_cycle_list_item_markers = 1
-
 "}}}
 "}}}
 
@@ -630,7 +734,7 @@ autocmd Filetype markdown inoremap <buffer> ,l --------<Enter>
 "}}}
 
 " C++ Snippets {{{
-autocmd Filetype cpp,c inoremap <buffer> ,for <Esc>:-1read$HOME/.config/nvim/code-snippets/c++_for_.snippets<CR>
+"" autocmd Filetype cpp,c inoremap <buffer> ,for <Esc>:-1read$HOME/.config/nvim/code-snippets/c++_for_.snippets<CR>
 "}}}
 "}}}
 
