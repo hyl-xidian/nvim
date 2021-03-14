@@ -227,6 +227,8 @@ nnoremap <F4> :exec exists('syntax_on') ? 'syn off': 'syn on'<CR>
 
 " Faster save and quit
 nnoremap S :w<CR>
+
+nnoremap ; :
 "}}}
 
 " Cursor Movement {{{
@@ -297,6 +299,8 @@ nmap tl :+tabnext<CR>
 nmap th :-tabnext<CR>
 " open a new tab
 nmap tn :tabnew<CR>
+" fuzzy search in a new tab
+nmap <leader>f :tabnew<CR>:FZF!<space>~/workspace<CR>
 "}}}
 
 " Buffer Management {{{
@@ -313,7 +317,7 @@ nnoremap bd :bd<CR>
 nnoremap bs :ls b<CR>
 "}}}
 
-" code {{{
+" Code {{{
 inoremap {{ {}<Esc>i<CR><Esc>koi<Esc>j<C-S-v><S-%>=j<S-$>xa
 "}}}
 "}}}
@@ -323,6 +327,7 @@ inoremap {{ {}<Esc>i<CR><Esc>koi<Esc>j<C-S-v><S-%>=j<S-$>xa
 "" ===
 "" install plug
 "" ===
+
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'bling/vim-bufferline'
@@ -367,6 +372,9 @@ Plug 'ryanoasis/vim-devicons'
 
 " coc.nvim
 Plug 'neoclide/coc.nvim',{'branch': 'release'}
+
+" vimspector
+Plug 'puremourning/vimspector'
 
 " highlight
 Plug 'RRethy/vim-illuminate'
@@ -436,11 +444,11 @@ endfunction
 ""autocmd CursorHold * silent call CocActionAsync('highlight')
 " Symbol renaming.
 nmap <leader>r <Plug>(coc-rename)
-"
-"" Formatting selected code.
-"" NOTE: conflict with :Ranger
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+
+""  "" Formatting selected code.
+""  "" NOTE: conflict with :Ranger
+""  xmap <leader>f  <Plug>(coc-format-selected)
+""  nmap <leader>f  <Plug>(coc-format-selected)
 
 nmap tt :CocCommand explorer<CR>
 " coc-translator
@@ -465,6 +473,21 @@ nmap ts <Plug>(coc-translator-p)
 " ===
 let g:Illuminate_delay = 550
 hi illuminatedWord cterm=undercurl gui=undercurl
+
+" ===
+" === vimspector
+" ===
+let g:vimspector_enable_mappings = 'HUMAN'
+function! s:read_template_into_buffer(template)
+	" has to be a function to avoid the extra space fzf#run insers otherwise
+	execute '0r ~/.config/nvim/sample_vimspector_json/'.a:template
+endfunction
+command! -bang -nargs=* LoadVimSpectorJsonTemplate call fzf#run({
+			\   'source': 'ls -1 ~/.config/nvim/sample_vimspector_json',
+			\   'down': 20,
+			\   'sink': function('<sid>read_template_into_buffer')
+			\ })
+noremap <leader>d :tabe .vimspector.json<CR>:LoadVimSpectorJsonTemplate<CR>
 
 
 "" ===
@@ -565,7 +588,7 @@ let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
 "" === Ranger
 "" ===
 nnoremap <LEADER>o :RangerCurrentDirectoryNewTab<CR>
-nnoremap <LEADER>n :RangerCurrentFile<CR>
+"nnoremap <LEADER>n :RangerCurrentFile<CR>
 
 ""  "" ===
 ""  "" === Lazygit
