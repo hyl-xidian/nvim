@@ -93,8 +93,8 @@ set ttyfast
 "" Automatically matches the right bracket when you enter a left bracket
 "set showmatch
 
-"set autoread
-"set autowriteall
+" set autoread
+" set autowriteall
 
 " Display the current line number
 set number
@@ -374,6 +374,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'neoclide/coc.nvim',{'branch': 'release'}
 
 " vimspector
+" After install, remember to execute `./install_gadget.py --enable-c`
 Plug 'puremourning/vimspector'
 
 " highlight
@@ -487,7 +488,8 @@ command! -bang -nargs=* LoadVimSpectorJsonTemplate call fzf#run({
 			\   'down': 20,
 			\   'sink': function('<sid>read_template_into_buffer')
 			\ })
-noremap <leader>d :tabe .vimspector.json<CR>:LoadVimSpectorJsonTemplate<CR>
+nnoremap <leader>d :tabe .vimspector.json<CR>:LoadVimSpectorJsonTemplate<CR>
+nnoremap <leader>b :VimspectorReset<CR>
 
 
 "" ===
@@ -691,7 +693,7 @@ if &filetype == 'c'
     exec "!time ./%<"
 elseif &filetype == 'cpp'
 	set splitbelow
-	exec "!g++ -std=c++11 % -Wall -o %<"
+	exec "!g++ -g -std=c++11 % -Wall -o %<"
 	:sp
     :res -8
 	:term ./%<
