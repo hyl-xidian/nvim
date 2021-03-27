@@ -120,10 +120,10 @@ syntax on
 set cindent
 "set smartindent
 
-" Tab key:The increased indent will be converted to 4 spaces
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+" Tab key:The increased indent will be converted to 2 spaces
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 
 " Search:
@@ -318,7 +318,9 @@ nnoremap bs :ls b<CR>
 "}}}
 
 " Code {{{
-inoremap {{ {}<Esc>i<CR><Esc>koi<Esc>j<C-S-v><S-%>=j<S-$>xa
+""inoremap {{ {}<Esc>i<CR><Esc>koi<Esc>j<C-S-v><S-%>=j<S-$>xa
+inoremap { {}<Esc>i
+inoremap ( ()<Esc>i
 "}}}
 "}}}
 
@@ -365,7 +367,8 @@ Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] 
 "" Markdown preview
 "" Execute commands `:call mkdp#util#install()` after installation.
 "" Ps: privoxy' may be needed
-Plug 'iamcco/markdown-preview.nvim', {'for':'markdown'}
+"Plug 'iamcco/markdown-preview.nvim', {'for':'markdown'}
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 " devicons
 Plug 'ryanoasis/vim-devicons'
@@ -622,7 +625,8 @@ let g:mkdp_refresh_slow = 0
 let g:mkdp_command_for_global = 0
 
 let g:mkdp_open_to_the_world = 0
-let g:mkdp_browser = 'chromium'
+"let g:mkdp_browser = 'Google\ Chrome'
+let g:mkdp_path_to_chrome = "open -a Google\\ Chrome"
 
 " a custom vim function name to open preview page
 " this function will receive url as param
