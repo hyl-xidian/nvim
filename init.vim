@@ -319,8 +319,11 @@ nnoremap bs :ls b<CR>
 
 " Code {{{
 ""inoremap {{ {}<Esc>i<CR><Esc>koi<Esc>j<C-S-v><S-%>=j<S-$>xa
-inoremap { {}<Esc>i
-inoremap ( ()<Esc>i
+""inoremap { {}<Esc>i
+""inoremap ( ()<Esc>i
+""inoremap [ []<Esc>i
+""inoremap " ""<Esc>i
+""inoremap ' ''<Esc>i
 "}}}
 "}}}
 
@@ -357,6 +360,9 @@ Plug 'francoiscabrol/ranger.vim'
 Plug 'gcmt/wildfire.vim'
 " Surround.vim is all about "surroundings": parentheses, brackets, quotes, XML tags, and more. The plugin provides mappings to easily delete, change and add such surroundings in pairs.
 Plug 'tpope/vim-surround'
+
+"Auto pairs
+Plug 'jiangmiao/auto-pairs'
 
 "" Markdown
 " markdown table mode
