@@ -7,9 +7,7 @@
                 "type": "cppdbg",
                 "request": "launch",
                 "program": "${fileDirname}/${fileBasenameNoExtension}",
-                "args": [
-                    "*${ProgramArgs}"
-                ],
+                "args": [],
                 "cwd": "${workspaceRoot}",
                 "environment": [],
                 "externalConsole": false,

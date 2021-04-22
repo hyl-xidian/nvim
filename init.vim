@@ -5,7 +5,26 @@
 ""      |_| |_| |_|\__, |      \_/ |_|_| |_| |_|_|  \___|
 ""                 |___/                                 
 
-" Appereance {{{
+" 0. Preparation {{{
+" 1. install through brew or pacman
+" Ripgrep
+" ctags
+" 2. Hooks after plugins installation
+"" privoxy"" may be needed
+" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+" 3. coc extension need to be installed
+" 'coc-json',
+" 'coc-vimlsp',
+" 'coc-explorer',
+" 'coc-translator'
+" (not necessary) coc-java, coc-clang-format-style-options, coc-actions, coc-marketplace
+" 4. files need to be created when in some situations
+" cpp: .clang-format --> <leader>c
+" cpp: .vimspector.json --> <leader>d
+" }}}
+
+" 1. Appereance {{{
 set background=dark
 
 "color koehler
@@ -37,9 +56,9 @@ set statusline+=%#Keyword#
 set statusline+=\%y
 
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-"}}}
+" }}}
 
-" Editor Behavior {{{
+" 2. Editor Behavior {{{
 "" ===
 "" === Editor Behavior
 "" ===
@@ -53,7 +72,8 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "
 "" Affected functions:
 "" vim-gitgutter
-set updatetime=200
+" set updatetime=200
+set updatetime=100
 " set updatetime=600
 
 "" Key-specific timeoutlen in vim
@@ -120,10 +140,10 @@ syntax on
 set cindent
 "set smartindent
 
-" Tab key:The increased indent will be converted to 2 spaces
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+" Tab key:The increased indent will be converted to 4 spaces
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set expandtab
 
 " Search:
@@ -186,9 +206,9 @@ set autochdir
 "" Correct spelling
 "set spell
 
-"}}}
+" }}}
 
-" Key Mappings {{{
+" 3. Key Mappings {{{
 " Basic Mappings {{{
 "" ===
 "" === Basic Mappings
@@ -317,17 +337,9 @@ nnoremap bd :bd<CR>
 nnoremap bs :ls b<CR>
 "}}}
 
-" Code {{{
-""inoremap {{ {}<Esc>i<CR><Esc>koi<Esc>j<C-S-v><S-%>=j<S-$>xa
-""inoremap { {}<Esc>i
-""inoremap ( ()<Esc>i
-""inoremap [ []<Esc>i
-""inoremap " ""<Esc>i
-""inoremap ' ''<Esc>i
-"}}}
-"}}}
+" }}}
 
-" Plugins {{{
+" 4. Plugins {{{
 " Install {{{
 "" ===
 "" install plug
@@ -335,6 +347,14 @@ nnoremap bs :ls b<CR>
 
 call plug#begin('~/.config/nvim/plugged')
 
+" vimspector
+" After install, remember to execute `./install_gadget.py --enable-c`
+Plug 'puremourning/vimspector'
+
+" Taglist
+Plug 'liuchengxu/vista.vim'
+
+Plug 'mg979/vim-xtabline'
 Plug 'bling/vim-bufferline'
 " Undo Tree
 Plug 'mbbill/undotree'
@@ -360,9 +380,12 @@ Plug 'francoiscabrol/ranger.vim'
 Plug 'gcmt/wildfire.vim'
 " Surround.vim is all about "surroundings": parentheses, brackets, quotes, XML tags, and more. The plugin provides mappings to easily delete, change and add such surroundings in pairs.
 Plug 'tpope/vim-surround'
-
-"Auto pairs
+" Multi cursor
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+" Auto pairs
 Plug 'jiangmiao/auto-pairs'
+" highlight
+Plug 'RRethy/vim-illuminate'
 
 "" Markdown
 " markdown table mode
@@ -381,13 +404,6 @@ Plug 'ryanoasis/vim-devicons'
 
 " coc.nvim
 Plug 'neoclide/coc.nvim',{'branch': 'release'}
-
-" vimspector
-" After install, remember to execute `./install_gadget.py --enable-c`
-Plug 'puremourning/vimspector'
-
-" highlight
-Plug 'RRethy/vim-illuminate'
 
 " Snippets
 ""  Plug 'honza/vim-snippets'
@@ -464,26 +480,30 @@ nmap tt :CocCommand explorer<CR>
 " coc-translator
 nmap ts <Plug>(coc-translator-p)
 
-""  " Remap for do codeAction of selected region
-""  function! s:cocActionsOpenFromSelected(type) abort
-""    execute 'CocCommand actions.open ' . a:type
-""  endfunction
-""  xmap <leader>a  <Plug>(coc-codeaction-selected)
-""  nmap <leader>a  <Plug>(coc-codeaction-selected)
-""
-""  " Applying codeAction to the selected region.
-""  " Example: `<leader>aap` for current paragraph
-""  xmap <leader>a  <Plug>(coc-codeaction-selected)
-""  nmap <leader>a  <Plug>(coc-codeaction-selected)
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+
+function! s:read_template_into_buffer_clang(template)
+	" has to be a function to avoid the extra space fzf#run insers otherwise
+	execute '0r ~/.config/nvim/sample_clang_format/'.a:template
+endfunction
+command! -bang -nargs=* LoadClangFormatTemplate call fzf#run({
+			\   'source': 'ls -1 ~/.config/nvim/sample_clang_format',
+			\   'down': 20,
+			\   'sink': function('<sid>read_template_into_buffer_clang')
+			\ })
+nnoremap <leader>c :tabe .clang-format<CR>:LoadClangFormatTemplate<CR>
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
 "}}}
 
 " Configurations {{{
-" ===
-" === vim-illuminate
-" ===
-let g:Illuminate_delay = 550
-hi illuminatedWord cterm=undercurl gui=undercurl
-
 " ===
 " === vimspector
 " ===
@@ -499,6 +519,28 @@ command! -bang -nargs=* LoadVimSpectorJsonTemplate call fzf#run({
 			\ })
 nnoremap <leader>d :tabe .vimspector.json<CR>:LoadVimSpectorJsonTemplate<CR>
 nnoremap <leader>b :VimspectorReset<CR>
+
+
+"" ===
+"" === vista
+"" ===
+noremap <LEADER>v :Vista!!<CR>
+noremap <c-t> :silent! Vista finder coc<CR>
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_default_executive = 'coc'
+let g:vista_fzf_preview = ['right:50%']
+let g:vista#renderer#enable_icon = 1
+let g:vista#renderer#icons = {
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
+" function! NearestMethodOrFunction() abort
+" 	return get(b:, 'vista_nearest_method_or_function', '')
+" endfunction
+" set statusline+=%{NearestMethodOrFunction()}
+" autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+
+let g:scrollstatus_size = 15
 
 
 "" ===
@@ -536,7 +578,7 @@ let g:xtabline_settings.tabline_modes = ['tabs', 'buffers']
 let g:xtabline_settings.enable_persistance = 0
 let g:xtabline_settings.last_open_first = 1
 "noremap to :XTabCycleMode<CR>
-"noremap \p :echo expand('%:p')<CR>
+noremap \p :echo expand('%:p')<CR>
 
 
 " ===
@@ -595,18 +637,35 @@ let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
 
 
+" ===
+" === vim-illuminate
+" ===
+let g:Illuminate_delay = 550
+hi illuminatedWord cterm=undercurl gui=undercurl
+
+
+" ===
+" === vim visual multi
+" ===
+let g:VM_maps = {}
+let g:VM_maps['Find Under']         = '<C-d>'           " replace C-n
+let g:VM_maps['Find Subword Under'] = '<C-d>'           " replace visual C-n
+let g:VM_maps["Select Cursor Down"] = '<M-C-Down>'      " start selecting down
+let g:VM_maps["Select Cursor Up"]   = '<M-C-Up>'        " start selecting up
+"let g:VM_leader                     = {'default': ',', 'visual': ',', 'buffer': ','}
+let g:VM_maps["Select All"]                  = '\\a'
+let g:VM_maps["Start Regex Search"]          = '\\/'
+let g:VM_maps["Visual Regex"]                = '\\/'
+let g:VM_maps["Visual All"]                  = '\\a'
+let g:VM_maps["Visual Find"]                 = '\\f'
+let g:VM_maps["Visual Cursors"]              = '\\c'
+
+
 "" ===
 "" === Ranger
 "" ===
 nnoremap <LEADER>o :RangerCurrentDirectoryNewTab<CR>
 "nnoremap <LEADER>n :RangerCurrentFile<CR>
-
-""  "" ===
-""  "" === Lazygit
-""  "" ===
-""  let g:lazygit_floating_window_scaling_factor = 0.8 " scaling factor for floating window
-""  let g:lazygit_floating_window_corner_chars = ['╭', '╮', '╰', '╯'] " customize lazygit popup window corner characters
-""  nnoremap <F3> :LazyGit<CR>
 
 
 "" ===
@@ -661,9 +720,9 @@ let g:mkdp_preview_options = {
 "" ===
 let g:vmt_cycle_list_item_markers = 1
 "}}}
-"}}}
+" }}}
 
-" Useful Functions {{{
+" 5. Useful Functions {{{
 " Fcitx Control {{{
 "" ===
 "" fcitx control
@@ -708,8 +767,12 @@ elseif &filetype == 'cpp'
     :res -8
 	:term ./%<
 elseif &filetype == 'java'
+    set splitbelow
     exec "!javac %"
-    exec "!time java %<"
+    :sp
+      :res -8
+	  :term java %<
+    "exec "!time java %<"
 elseif &filetype == 'sh'
     :!time bash %
 elseif &filetype == 'python'
@@ -747,9 +810,9 @@ let l:branchname = GitBranch()
 return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
 endfunction
 "}}}
-"}}}
+" }}}
 
-" Snippets {{{
+" 6. Snippets {{{
 " Markdown Snippets {{{
 autocmd Filetype markdown inoremap <buffer> ,f <Esc>/<++><CR>:nohlsearch<CR>c4l
 "autocmd Filetype markdown inoremap <buffer> ,w <Esc>/ <++><CR>:nohlsearch<CR>c5l<CR>
@@ -771,6 +834,6 @@ autocmd Filetype markdown inoremap <buffer> ,l --------<Enter>
 " C++ Snippets {{{
 "" autocmd Filetype cpp,c inoremap <buffer> ,for <Esc>:-1read$HOME/.config/nvim/code-snippets/c++_for_.snippets<CR>
 "}}}
-"}}}
+" }}}
 
 " vim:set fdm=marker:
