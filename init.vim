@@ -22,6 +22,8 @@
 " 4. files need to be created when in some situations
 " cpp: .clang-format --> <leader>c
 " cpp: .vimspector.json --> <leader>d
+" 5. others
+" 'ranger.vim' delete a function.
 " }}}
 
 " 1. Appereance {{{

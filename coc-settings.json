@@ -2,6 +2,13 @@
     "coc.preferences.extensionUpdateCheck": "weekly",
     "suggest.noselect": true,
     "suggest.enablePreselect": false,
+    "suggest.triggerAfterInsertEnter": true,
+    "suggest.autoTrigger": "always",
+    "suggest.timeout": 5000,
+    "suggest.enablePreview": true,
+    "suggest.floatEnable": true,
+    "suggest.detailField": "preview",
+    "suggest.triggerCompletionWait": 100,
     "suggest.completionItemKindLabels": {
         "class": "\uf0e8",
         "color": "\ue22b",
