@@ -1,0 +1,42 @@
+{
+    "adapters": {
+        "java-debug-server": {
+            "name": "vscode-java",
+            "port": "${AdapterPort}"
+        }
+    },
+    "configurations": {
+        "Cpp Launch": {
+            "adapter": "vscode-cpptools",
+            "configuration": {
+                "name": "cpp",
+                "type": "cppdbg",
+                "request": "launch",
+                "program": "${fileDirname}/${fileBasenameNoExtension}",
+                "args": [],
+                "cwd": "${workspaceRoot}",
+                "environment": [],
+                "externalConsole": false,
+                "stopAtEntry": true,
+                "MIMode": "lldb",
+                "logging": {
+                    "engineLogging": true
+                }
+            }
+        },
+        "Java Attach": {
+            "adapter": "java-debug-server",
+            "configuration": {
+                "request": "attach",
+                "host": "127.0.0.1",
+                "port": "5005"
+            },
+            "breakpoints": {
+                "exception": {
+                    "caught": "N",
+                    "uncaught": "N"
+                }
+            }
+        }
+    }
+}

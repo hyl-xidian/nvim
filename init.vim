@@ -19,11 +19,14 @@
 " 'coc-explorer',
 " 'coc-translator'
 " (not necessary) coc-java, coc-clang-format-style-options, coc-actions, coc-marketplace
+" 3.1 vimspector
+" let g:vimspector_install_gadgets = ['vscode-cpptools', 'vscode-java-debug']
 " 4. files need to be created when in some situations
 " cpp: .clang-format --> <leader>c
 " cpp: .vimspector.json --> <leader>d
 " 5. others
-" 'ranger.vim' delete a function.
+" 'ranger.vim' delete a function mapped with '<leader>f'
+" when not in linux system, uncomment the Fcitx Control.
 " }}}
 
 " 1. Appereance {{{
@@ -75,7 +78,7 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "" Affected functions:
 "" vim-gitgutter
 " set updatetime=200
-set updatetime=100
+set updatetime=150
 " set updatetime=600
 
 "" Key-specific timeoutlen in vim
@@ -179,7 +182,8 @@ filetype plugin indent on
 
 " Search down into subfolders
 " Provides tab-completion for all file -related tasks
-set path+=**
+"set path+=**
+set path=$PWD/**
 
 " Display all matching files when we tab complete
 set wildmenu
@@ -510,6 +514,7 @@ command! -nargs=0 Format :call CocAction('format')
 " === vimspector
 " ===
 let g:vimspector_enable_mappings = 'HUMAN'
+let g:vimspector_install_gadgets = ['vscode-cpptools', 'vscode-java-debug']
 function! s:read_template_into_buffer(template)
 	" has to be a function to avoid the extra space fzf#run insers otherwise
 	execute '0r ~/.config/nvim/sample_vimspector_json/'.a:template
@@ -520,7 +525,45 @@ command! -bang -nargs=* LoadVimSpectorJsonTemplate call fzf#run({
 			\   'sink': function('<sid>read_template_into_buffer')
 			\ })
 nnoremap <leader>d :tabe .vimspector.json<CR>:LoadVimSpectorJsonTemplate<CR>
-nnoremap <leader>b :VimspectorReset<CR>
+
+function JavaPreDebug()
+  exec "!javac -g %"
+  :vsp
+  :term java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=5005 %<
+endfunction
+
+function! JavaStartDebugCallback(err, port)
+  execute "cexpr! 'Java debug started on port: " . a:port . "'"
+  call vimspector#LaunchWithSettings({ "configuration": "Java Attach", "AdapterPort": a:port })
+endfunction
+
+function JavaStartDebug()
+  call CocActionAsync('runCommand', 'vscode.java.startDebugSession', function('JavaStartDebugCallback'))
+endfunction
+
+function JavaDebugAfter()
+  :vertical resize+10
+  :resize+8
+  set splitright
+  :vertical sb Xdebug
+  :vertical resize-16
+endfunction
+
+nmap <F1> :call JavaPreDebug()<CR><c-w>l:call JavaStartDebug()<CR>
+nmap <leader><F1> :call JavaDebugAfter()<CR><c-w>h
+command! -bang AdjustUI call JavaDebugAfter()
+
+command! -bang ClearBreakPoints call vimspector#ClearBreakpoints()
+
+"nmap <leader>b :VimspectorReset<CR>
+func! EscapeVimspector()
+  :VimspectorReset
+  if bufwinnr("Xdebug") > 0
+      :bd! Xdebug
+  endif
+endfunc
+
+nnoremap <leader>b :call EscapeVimspector()<CR>
 
 
 "" ===
@@ -752,7 +795,8 @@ endfunction
 "" default : close
 "autocmd InsertEnter * call Fcitx2zh()
 
-autocmd InsertLeave * call Fcitx2en()
+""" Linux :uncomment the line 
+""" autocmd InsertLeave * call Fcitx2en()
 
 "}}}
 
@@ -770,11 +814,10 @@ elseif &filetype == 'cpp'
 	:term ./%<
 elseif &filetype == 'java'
     set splitbelow
-    exec "!javac %"
+    exec "!javac -g %"
     :sp
-      :res -8
-	  :term java %<
-    "exec "!time java %<"
+    :res -8
+    :term java %<
 elseif &filetype == 'sh'
     :!time bash %
 elseif &filetype == 'python'
