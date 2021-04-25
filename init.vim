@@ -43,24 +43,40 @@ set guifont=SauceCodePro\ Nerd\ Font\ Mono\ 14
 set laststatus=2
 
 " Set the statusline
+" Reference:https://zhuanlan.zhihu.com/p/25494323
 " Preview all highlight groups with `:so $VIMRUNTIME/syntax/hitest.vim
 set statusline=
 "set statusline+=%#Normal#
 "set statusline+=%{StatuslineGit()}
-set statusline+=%#Keyword#
+"set statusline+=%#Keyword#
+set statusline+=%#StatusLine#
 set statusline+=\ %F
-set statusline+=%m
-set statusline+=%=
-set statusline+=%#Normal#
-set statusline+=\ %l,%c
 set statusline+=%#Keyword#
-set statusline+=\ %p%%
+set statusline+=%m\ %r
 set statusline+=%#Normal#
+set statusline+=%=
+set statusline+=[%l,%c]
+set statusline+=\ 
+set statusline+=%#Keyword#
+set statusline+=\ 
+set statusline+=\ %p%%\ 
+set statusline+=%#Normal#
+set statusline+=\|\ 
 set statusline+=\ %{&fileformat}:%{&fileencoding?&fileencoding:&encoding}
 set statusline+=%#Keyword#
-set statusline+=\%y
-
+set statusline+=\ %y
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+function! InsertStatuslineColor(mode)
+if a:mode == 'i'
+  hi StatusLine ctermbg=238
+  hi StatusLine ctermfg=109
+elseif a:mode == 'r'
+  hi StatusLine ctermfg=208
+endif
+endfunction
+au InsertEnter * call InsertStatuslineColor(v:insertmode)
+au InsertLeave * hi StatusLine ctermbg=223 ctermfg=239
 " }}}
 
 " 2. Editor Behavior {{{
@@ -355,13 +371,20 @@ call plug#begin('~/.config/nvim/plugged')
 
 " vimspector
 " After install, remember to execute `./install_gadget.py --enable-c`
-Plug 'puremourning/vimspector'
+Plug 'puremourning/vimspector', {'for': ['java', 'cpp']}
 
 " Taglist
-Plug 'liuchengxu/vista.vim'
+Plug 'liuchengxu/vista.vim', {'for': ['java', 'cpp', 'vim-plug']}
 
 Plug 'mg979/vim-xtabline'
 Plug 'bling/vim-bufferline'
+"Plug 'joshdick/onedark.vim'
+"Plug 'itchyny/lightline.vim'
+
+" syntax
+Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['cpp']}
+Plug 'uiiaoo/java-syntax.vim', {'for': ['java']}
+
 " Undo Tree
 Plug 'mbbill/undotree'
 " Git status plug
@@ -389,21 +412,21 @@ Plug 'tpope/vim-surround'
 " Multi cursor
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 " Auto pairs
-Plug 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs', {'for': ['java', 'cpp']}
 " highlight
-Plug 'RRethy/vim-illuminate'
+Plug 'RRethy/vim-illuminate', {'for': ['java', 'cpp', 'vim-plug']}
 
 "" Markdown
 " markdown table mode
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle', 'for': ['text', 'markdown', 'vim-plug'] }
 " Markdown TOC
-Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] }
+Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown'] }
 
 "" Markdown preview
 "" Execute commands `:call mkdp#util#install()` after installation.
 "" Ps: privoxy' may be needed
 "Plug 'iamcco/markdown-preview.nvim', {'for':'markdown'}
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown']}
 
 " devicons
 Plug 'ryanoasis/vim-devicons'
@@ -608,10 +631,17 @@ let g:netrw_liststyle=3
 
 
 "" ===
+"" === Lightline
+"" ===
+let g:lightline = {'colorscheme': 'seoul256'}
+
+
+"" ===
 "" === Buffer line
 "" ===
 "let g:bufferline_active_buffer_left = '{'
 "let g:bufferline_active_buffer_right = '}'
+let g:bufferline_modified = '+'
 
 
 " ===
