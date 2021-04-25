@@ -18,7 +18,7 @@
 " 'coc-vimlsp',
 " 'coc-explorer',
 " 'coc-translator'
-" (not necessary) coc-java, coc-clang-format-style-options, coc-actions, coc-marketplace
+" (not necessary) coc-java, , coc-java-debug, coc-clang-format-style-options, coc-actions, coc-marketplace
 " 3.1 vimspector
 " let g:vimspector_install_gadgets = ['vscode-cpptools', 'vscode-java-debug']
 " 4. files need to be created when in some situations
@@ -93,6 +93,8 @@ au InsertLeave * hi StatusLine ctermbg=223 ctermfg=239
 "
 "" Affected functions:
 "" vim-gitgutter
+"" vimspector
+"" ...
 " set updatetime=200
 set updatetime=150
 " set updatetime=600
@@ -173,7 +175,7 @@ set hlsearch
 " Enter a character and match it automatically
 set incsearch
 
-" Search for content that contains uppercase characters, it performs a case sensitive search; 
+" Search for content that contains uppercase characters, it performs a case sensitive search;
 " if it searches for content that is only lowercase, it performs a case insensitive search
 set ignorecase
 set smartcase
@@ -198,8 +200,7 @@ filetype plugin indent on
 
 " Search down into subfolders
 " Provides tab-completion for all file -related tasks
-"set path+=**
-set path=$PWD/**
+set path+=**
 
 " Display all matching files when we tab complete
 set wildmenu
