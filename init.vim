@@ -439,6 +439,16 @@ Plug 'neoclide/coc.nvim',{'branch': 'release'}
 ""  Plug 'honza/vim-snippets'
 ""  Plug 'SirVer/ultisnips'
 call plug#end()
+function! s:plug_loaded(spec)
+  let rtp = join(filter([a:spec.dir, get(a:spec, 'rtp', '')], 'len(v:val)'), '/')
+  return stridx(&rtp, rtp) >= 0 && isdirectory(rtp)
+endfunction
+
+function! s:plug_names(...)
+    return sort(filter(keys(filter(copy(g:plugs), { k, v -> !s:plug_loaded(v) })), 'stridx(v:val, a:1) != -1'))
+endfunction
+
+command! -nargs=+ -bar -complete=customlist,s:plug_names PlugLoad call plug#load([<f-args>])
 "}}}
 
 " COC Configuration {{{
@@ -453,6 +463,11 @@ let g:coc_global_extensions = [
 
 set nobackup
 set nowritebackup
+
+
+" TIPS: How to scroll popup window in COC?
+" An alternative I recently discovered was to open the documentation popup with shift+k (or press ?) then I switch to the window using [ctrl+w, w] then use normal vim bindings to navigate. Then [ctrl+w, q] to exit the popup.
+
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
