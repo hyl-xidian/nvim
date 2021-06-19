@@ -51,6 +51,7 @@
         "youdao"
     ],
     "coc.preferences.formatOnSaveFiletypes": [
+        "cpp",
         "json"
     ],
     "explorer.width": 28,
@@ -91,6 +92,15 @@
             "initializationOptions": {
                 "cache": {
                     "directory": "/tmp/ccls"
+                },
+                "clang": {
+                    "resourceDir": "/Library/Developer/CommandLineTools/usr/lib/clang/10.0.1",
+                    "extraArgs": [
+                        "-isystem",
+                        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1",
+                        "-I",
+                        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/"
+                    ]
                 }
             }
         }

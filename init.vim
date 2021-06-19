@@ -61,7 +61,8 @@ set statusline+=%#Keyword#
 set statusline+=\ 
 set statusline+=\ %p%%\ 
 set statusline+=%#Normal#
-set statusline+=\|\ 
+"set statusline+=\|\ 
+set statusline+=\|\
 set statusline+=\ %{&fileformat}:%{&fileencoding?&fileencoding:&encoding}
 set statusline+=%#Keyword#
 set statusline+=\ %y
@@ -256,7 +257,7 @@ nnoremap <LEADER><CR> :nohlsearch<CR>
 "a |provider| which transparently uses shell commands to communicate with the
 "system clipboard or any other clipboard "backend".
 "
-" BACKEND: xclip (if $DISPLAY is set)
+" BACKEND: xclip or xsel(if $DISPLAY is set)
 "
 "" ctrl + ;
 "" open a memu to select contents from history system clipboard
@@ -369,7 +370,6 @@ nnoremap bs :ls b<CR>
 "" ===
 
 call plug#begin('~/.config/nvim/plugged')
-
 " vimspector
 " After install, remember to execute `./install_gadget.py --enable-c`
 Plug 'puremourning/vimspector', {'for': ['java', 'cpp']}
@@ -377,7 +377,9 @@ Plug 'puremourning/vimspector', {'for': ['java', 'cpp']}
 " Taglist
 Plug 'liuchengxu/vista.vim', {'for': ['java', 'cpp', 'vim-plug']}
 
-Plug 'mg979/vim-xtabline'
+"BUG!!!!
+"Plug 'mg979/vim-xtabline'
+
 Plug 'bling/vim-bufferline'
 "Plug 'joshdick/onedark.vim'
 "Plug 'itchyny/lightline.vim'
@@ -429,15 +431,15 @@ Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown'] }
 "Plug 'iamcco/markdown-preview.nvim', {'for':'markdown'}
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown']}
 
-" devicons
-Plug 'ryanoasis/vim-devicons'
-
 " coc.nvim
 Plug 'neoclide/coc.nvim',{'branch': 'release'}
 
 " Snippets
 ""  Plug 'honza/vim-snippets'
 ""  Plug 'SirVer/ultisnips'
+
+" devicons
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 function! s:plug_loaded(spec)
   let rtp = join(filter([a:spec.dir, get(a:spec, 'rtp', '')], 'len(v:val)'), '/')
@@ -467,7 +469,6 @@ set nowritebackup
 
 " TIPS: How to scroll popup window in COC?
 " An alternative I recently discovered was to open the documentation popup with shift+k (or press ?) then I switch to the window using [ctrl+w, w] then use normal vim bindings to navigate. Then [ctrl+w, q] to exit the popup.
-
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -781,7 +782,7 @@ let g:mkdp_refresh_slow = 0
 let g:mkdp_command_for_global = 0
 
 let g:mkdp_open_to_the_world = 0
-"let g:mkdp_browser = 'Google\ Chrome'
+let g:mkdp_browser = 'google-chrome-stable'
 let g:mkdp_path_to_chrome = "open -a Google\\ Chrome"
 
 " a custom vim function name to open preview page
@@ -841,8 +842,8 @@ endfunction
 "" default : close
 "autocmd InsertEnter * call Fcitx2zh()
 
-""" Linux :uncomment the line 
-""" autocmd InsertLeave * call Fcitx2en()
+" Linux :uncomment the line 
+autocmd InsertLeave * call Fcitx2en()
 
 "}}}
 
