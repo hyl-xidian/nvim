@@ -372,10 +372,10 @@ nnoremap bs :ls b<CR>
 call plug#begin('~/.config/nvim/plugged')
 " vimspector
 " After install, remember to execute `./install_gadget.py --enable-c`
-Plug 'puremourning/vimspector', {'for': ['java', 'cpp']}
+"Plug 'puremourning/vimspector', {'for': ['java', 'cpp']}
 
 " Taglist
-Plug 'liuchengxu/vista.vim', {'for': ['java', 'cpp', 'vim-plug']}
+"Plug 'liuchengxu/vista.vim', {'for': ['java', 'cpp', 'vim-plug']}
 
 "BUG!!!!
 "Plug 'mg979/vim-xtabline'
@@ -842,8 +842,8 @@ endfunction
 "" default : close
 "autocmd InsertEnter * call Fcitx2zh()
 
-" Linux :uncomment the line 
-autocmd InsertLeave * call Fcitx2en()
+"" Linux :uncomment the line 
+"autocmd InsertLeave * call Fcitx2en()
 
 "}}}
 
